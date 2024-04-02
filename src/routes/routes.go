@@ -3,6 +3,7 @@ package routes
 import (
 	"net/http"
 	"todoproject-be/src/controllers"
+	"todoproject-be/src/middlewares"
 	"todoproject-be/src/repository"
 	"todoproject-be/src/services"
 
@@ -11,26 +12,36 @@ import (
 
 func AddRoutes(server *gin.Engine) {
 
-	v1 := server.Group("/v1")
-	{
+	//Recupero instanze dei controller
+	tipController, userController := ControllerIstance()
 
-		//Api di test
-		v1.GET("/ping", func(context *gin.Context) {
-			context.JSON(http.StatusOK, gin.H{
-				"message": "pong",
-			})
+	server.GET("/ping", func(context *gin.Context) {
+		context.JSON(http.StatusOK, gin.H{
+			"message": "pong",
 		})
-		tipController, userController := ControllerIstance()
+	})
+
+	api := server.Group("/api")
+	{
+		// Api per l'utente
+		api.POST("/users", userController.AddUser)
+		api.POST("/users/login", userController.Login)
+	}
+
+	//Api per gli utenti autenticati
+	auth := server.Group("/api/authenticated")
+	{
+		//JWT middleware
+		auth.Use(middlewares.JwtAuthMiddleware())
 
 		// Api per l'utente
-		v1.GET("/users/:username", userController.GetUser)
-		v1.POST("/users", userController.AddUser)
+		api.GET("/users/:username", userController.GetUser)
 
 		//Api per il tip
-		v1.POST("/tips", tipController.AddTip)
-		v1.GET("/tips/:idUtente", tipController.GetAllTips)
-		v1.GET("/tips/dettaglio/:idTip", tipController.GetTip)
-		v1.PUT("/tips", tipController.UpdateTip)
+		auth.GET("/tips/:idUtente", tipController.GetAllTips)
+		auth.GET("/tips/dettaglio/:idTip", tipController.GetTip)
+		auth.POST("/tips", tipController.AddTip)
+		auth.PUT("/tips", tipController.UpdateTip)
 	}
 
 	//Api route errata

@@ -1,14 +1,15 @@
 package utility
 
 import (
-	"net/http"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 )
 
-func CheckErrore(ctx *gin.Context, err error) {
+func CheckErrore(ctx *gin.Context, err error, httpError int) {
+	fmt.Println(httpError)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		ctx.JSON(httpError, gin.H{"message": err.Error()})
 		panic(err)
 	}
 }
