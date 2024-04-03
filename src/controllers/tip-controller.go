@@ -47,11 +47,37 @@ func (t TipController) GetAllTips(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, tips)
 }
 
+// GetTip godoc
+// @Summary      Recupera tip
+// @Description  Recupera un singolo tip
+// @Tags         Tip
+// @Accept		 json
+// @Produce      json
+// @Param        idTip path int true "Id tip"
+// @Success       200 {object} models.Tip
+// @Failure 	  400 {string} string "Bad request"
+// @Failure 	  401 {string} string "Unauthorized"
+// @Failure 	  500 {string} string "Internal server error"
+// @Router       /authenticated/tips/dettaglio/{idTip} [get]
+// @Security Bearer
 func (t TipController) GetTip(ctx *gin.Context) {
 	tip := t.TipService.GetTip(ctx)
 	ctx.JSON(http.StatusOK, tip)
 }
 
+// GetTip godoc
+// @Summary      Aggiorna tip
+// @Description  Aggiorna un singolo tip
+// @Tags         Tip
+// @Accept		 json
+// @Produce      json
+// @Param        tip body models.Tip true "Tip da aggiornare"
+// @Success       200 {object} models.Tip
+// @Failure 	  400 {string} string "Bad request"
+// @Failure 	  401 {string} string "Unauthorized"
+// @Failure 	  500 {string} string "Internal server error"
+// @Router       /authenticated/tips [put]
+// @Security Bearer
 func (t TipController) UpdateTip(ctx *gin.Context) {
 	tip := t.TipService.UpdateTip(ctx)
 	ctx.JSON(http.StatusOK, tip)

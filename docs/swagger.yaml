@@ -9,6 +9,15 @@ definitions:
       idOwner:
         type: integer
     type: object
+  models.User:
+    properties:
+      id:
+        type: integer
+      password:
+        type: string
+      username:
+        type: string
+    type: object
 externalDocs:
   description: OpenAPI
   url: https://swagger.io/resources/open-api/
@@ -62,6 +71,41 @@ paths:
       summary: Aggiungi un tip
       tags:
       - Tip
+    put:
+      consumes:
+      - application/json
+      description: Aggiorna un singolo tip
+      parameters:
+      - description: Tip da aggiornare
+        in: body
+        name: tip
+        required: true
+        schema:
+          $ref: '#/definitions/models.Tip'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Tip'
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Aggiorna tip
+      tags:
+      - Tip
   /authenticated/tips/{idUtente}:
     get:
       consumes:
@@ -99,6 +143,148 @@ paths:
       summary: Recupera tips
       tags:
       - Tip
+  /authenticated/tips/dettaglio/{idTip}:
+    get:
+      consumes:
+      - application/json
+      description: Recupera un singolo tip
+      parameters:
+      - description: Id tip
+        in: path
+        name: idTip
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Tip'
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Recupera tip
+      tags:
+      - Tip
+  /authenticated/users/{username}:
+    get:
+      consumes:
+      - application/json
+      description: Ottieni un singolo utente
+      parameters:
+      - description: Username utente
+        in: path
+        name: username
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Ottieni utente
+      tags:
+      - User
+  /users:
+    post:
+      consumes:
+      - application/json
+      description: Recupera un singolo utente
+      parameters:
+      - description: Utente da registrare
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Utente creato con successo
+          schema:
+            type: string
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Registra utente
+      tags:
+      - User
+  /users/login:
+    post:
+      consumes:
+      - application/json
+      description: Login utente
+      parameters:
+      - description: Utente logjn
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: token:fjdfjdfljjdfljfd
+          schema:
+            type: string
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Login utente
+      tags:
+      - User
 securityDefinitions:
   Bearer:
     description: Type "Bearer" followed by a space and JWT token.
