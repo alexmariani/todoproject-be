@@ -28,9 +28,14 @@ func (u UserController) Login(ctx *gin.Context) {
 	user := &models.User{}
 	utility.ValidateBody(ctx, user)
 	userDb := u.UserService.GetUser(ctx)
-	err := utility.VerifyPassword(user.Password, userDb.Password)
-	utility.CheckErrore(ctx, err, http.StatusInternalServerError)
+	errPass := utility.VerifyPassword(user.Password, userDb.Password)
+	utility.CheckErrore(ctx, errPass, http.StatusInternalServerError)
 	token, err := security.GenerateToken(uint(user.ID))
 	utility.CheckErrore(ctx, err, http.StatusInternalServerError)
 	ctx.JSON(http.StatusOK, gin.H{"token": token})
+}
+
+func (u UserController) ResetPassword(ctx *gin.Context) {
+	u.UserService.ResetPassword(ctx)
+	ctx.JSON(http.StatusOK, "Password cambiata con successo")
 }

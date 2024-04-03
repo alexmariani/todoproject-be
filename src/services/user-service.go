@@ -31,3 +31,10 @@ func (us UserService) GetUser(ctx *gin.Context) *models.User {
 	utility.CheckErrore(ctx, err, http.StatusInternalServerError)
 	return user
 }
+
+func (us UserService) ResetPassword(ctx *gin.Context) {
+	body := &models.User{}
+	utility.ValidateBody(ctx, body)
+	err := us.UserRepository.ResetPassword(body.Username, body.Password)
+	utility.CheckErrore(ctx, err, http.StatusInternalServerError)
+}

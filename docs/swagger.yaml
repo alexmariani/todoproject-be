@@ -1,0 +1,108 @@
+basePath: /api/v1
+definitions:
+  models.Tip:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      idOwner:
+        type: integer
+    type: object
+externalDocs:
+  description: OpenAPI
+  url: https://swagger.io/resources/open-api/
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: Backend todoproject.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Swagger Example API
+  version: "1.0"
+paths:
+  /authenticated/tips:
+    post:
+      consumes:
+      - application/json
+      description: Aggiungi un tip per un utente
+      parameters:
+      - description: Tip data
+        in: body
+        name: tip
+        required: true
+        schema:
+          $ref: '#/definitions/models.Tip'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Tip creato con successo.
+          schema:
+            type: string
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Aggiungi un tip
+      tags:
+      - Tip
+  /authenticated/tips/{idUtente}:
+    get:
+      consumes:
+      - application/json
+      description: Recupera tutti i tips per un utente
+      parameters:
+      - description: Id utente
+        in: path
+        name: idUtente
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Tip'
+            type: array
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Recupera tips
+      tags:
+      - Tip
+securityDefinitions:
+  Bearer:
+    description: Type "Bearer" followed by a space and JWT token.
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

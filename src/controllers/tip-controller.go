@@ -11,11 +11,37 @@ type TipController struct {
 	TipService *services.TipService
 }
 
+// AddTip godoc
+// @Summary      Aggiungi un tip
+// @Description  Aggiungi un tip per un utente
+// @Tags         Tip
+// @Accept       json
+// @Produce      json
+// @Param        tip body models.Tip true "Tip data"
+// @Success       200 {string} string "Tip creato con successo."
+// @Failure 	  400 {string} string "Bad request"
+// @Failure 	  401 {string} string "Unauthorized"
+// @Failure 	  500 {string} string "Internal server error"
+// @Router       /authenticated/tips [post]
+// @Security Bearer
 func (t TipController) AddTip(ctx *gin.Context) {
 	t.TipService.AddTip(ctx)
 	ctx.JSON(http.StatusOK, "Tip creato con successo.")
 }
 
+// GetAllTips godoc
+// @Summary      Recupera tips
+// @Description  Recupera tutti i tips per un utente
+// @Tags         Tip
+// @Accept		 json
+// @Produce      json
+// @Param        idUtente path int true "Id utente"
+// @Success       200 {array} models.Tip
+// @Failure 	  400 {string} string "Bad request"
+// @Failure 	  401 {string} string "Unauthorized"
+// @Failure 	  500 {string} string "Internal server error"
+// @Router       /authenticated/tips/{idUtente} [get]
+// @Security Bearer
 func (t TipController) GetAllTips(ctx *gin.Context) {
 	tips := t.TipService.GetAllTips(ctx)
 	ctx.JSON(http.StatusOK, tips)

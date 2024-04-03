@@ -9,4 +9,5 @@ import (
 type UserService interface {
 	AddUser(ctx *gin.Context)
 	GetUser(ctx *gin.Context) *models.User
+	ResetPassword(ctx *gin.Context)
 }

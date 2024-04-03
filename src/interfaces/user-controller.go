@@ -7,4 +7,5 @@ import (
 type UserController interface {
 	AddUser(ctx *gin.Context)
 	GetUser(ctx *gin.Context)
+	Login(ctx *gin.Context)
 }
